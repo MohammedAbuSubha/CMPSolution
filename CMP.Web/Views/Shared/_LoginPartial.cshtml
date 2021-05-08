@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+
+                <i class="fa fa-user-circle"></i>  @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li><button id="logOffBtn" class="btn btn-sm btn-light" style="color:dodgerblue"><i class="fa fa-sign-out"></i> Log off</button></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li style="margin:0px 10px;"><i class="fa fa-user-plus"></i>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li><i class="fa fa-sign-in"></i>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}
+<script type="text/javascript" src="~/Scripts/jquery-3.6.0.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#logOffBtn").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Account/LogOff",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,186 @@
+﻿@model IEnumerable<CMP.Business.DTO.Complaint.ComplaintViewModel>
+
+@{
+    ViewBag.Title = "Complaints List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container margin-v-10">
+    <div class="row">
+        <h2>Complaints List</h2>
+    </div>
+    @if (!HttpContext.Current.User.IsInRole("Admin"))
+    {
+        <div class="row margin-v-10">
+            <button id="createNewUserBtn" class="btn btn-primary createNewComplaintBtn" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus-square button-icon"></i> Add New Complaint</button>
+        </div>
+    }
+    <div class="row margin-v-10">
+        <table class="table table-responsive-md table-striped">
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Created By
+                </th>
+                <th>
+                    Created On
+                </th>
+                <th>
+                    Status
+                </th>
+
+                @if (HttpContext.Current.User.IsInRole("Admin"))
+                {
+                    <th></th>
+                }
+                <th></th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryText)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreateByUserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreateOnFormattedString)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastStatusText)
+                    </td>
+                    @if (HttpContext.Current.User.IsInRole("Admin"))
+                    {
+                        <td>
+                            @Html.HiddenFor(modelItem => item.Id)
+                            <button class="btn btn-success changeStatusBtn">
+                                Change Status
+                            </button>
+                        </td>
+                    }
+                    <td>
+                        @Html.HiddenFor(modelItem => item.Id)
+                        <button class="btn btn-info detailsBtn">
+                            Details
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Complaint</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="titleTxt">Title</label>
+                            <input type="text" class="form-control" id="titleTxt" placeholder="Enter Title">
+                        </div>
+                        <div class="form-group">
+                            <label for="categorySelect">Role</label>
+                            <select class="form-control" id="categorySelect">
+                                <option value="1">Web Site Issue</option>
+                                <option value="2">Customer Service Issue</option>
+                                <option value="3">Content Issue</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="descriptionTxtArea">Description</label>
+                            <textarea class="form-control" id="descriptionTxtArea" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary saveBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Complaint Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="detailsTitleTxt">Title</label>
+                            <input type="text" class="form-control" id="detailsTitleTxt" placeholder="Enter Title" readonly="readonly">
+                        </div>
+                        <div class="form-group">
+                            <label for="detailsCategorySelect">Role</label>
+                            <select class="form-control" id="detailsCategorySelect" readonly="readonly" disabled>
+                                <option value="1">Web Site issue</option>
+                                <option value="2">Customer Service Issue</option>
+                                <option value="3">Content Issue</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="detailsDescriptionTxtArea">Description</label>
+                            <textarea class="form-control" id="detailsDescriptionTxtArea" rows="3" readonly="readonly"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Change Status</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="statusSelect">Status</label>
+                            <select class="form-control" id="statusSelect">
+                                <option value="1">Pending</option>
+                                <option value="2">Resolution</option>
+                                <option value="3">Resolved</option>
+                                <option value="4">Dismissed</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary saveStatuBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Scripts/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="~/Scripts/Complaints.js"></script>

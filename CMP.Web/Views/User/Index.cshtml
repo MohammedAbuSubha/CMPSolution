@@ -1,0 +1,85 @@
+﻿@model IEnumerable<CMP.Business.DTO.Identity.UserViewModel>
+
+@{
+    ViewBag.Title = "Users List";
+}
+
+<div class="container margin-v-10">
+    <div class="row">
+        <h2>Users List</h2>
+    </div>
+    <div class="row margin-v-10">
+        <button id="createNewUserBtn" class="btn btn-primary createNewUserBtn" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-user-plus button-icon"></i> Add New User</button>
+    </div>
+    <div class="row margin-v-10">
+        <table class="table table-responsive-md table-striped">
+            <tr>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Role
+                </th>
+                @*<th></th>*@
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoleName)
+                    </td>
+                    @*<td>
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        </td>*@
+                </tr>
+            }
+
+        </table>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail">Email address</label>
+                            <input type="email" class="form-control" id="emailTxt" aria-describedby="emailHelp" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="passwordTxt" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Role</label>
+                            <select class="form-control" id="roleSelect">
+                                <option value="1">Admin</option>
+                                <option value="2">Customer</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary saveBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Scripts/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="~/Scripts/UsersPage.js"></script>
+
+
